@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #343a40;
+        }
+
+        table {
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary, .btn-danger, .btn-success {
+            margin-bottom: 5px;
+        }
+
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: #007bff;
+            padding: 8px 16px;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .pagination a.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+<h1>List of Products</h1>
+<div class="container">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="bg-primary text-white">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Unit</th>
+            <th>Manufacturer</th>
+            <th>Status</th>
+            <th colspan="2">
+                <a class="btn btn-success" href="/show-add-form">New Product</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product, iStat : ${productPage.content}">
+            <td th:text="${product.product_id}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.unit}"></td>
+            <td th:text="${product.manufacturer}"></td>
+            <td th:text="${product.status}"></td>
+            <td><a class="btn btn-primary" th:href="@{products/show-edit-form/{id}(id=${product.product_id})}">Edit</a></td>
+            <td><a class="btn btn-danger" th:href="@{products/delete/{id}(id=${product.product_id})}">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <div class="inline" th:if="${productPage.totalPages > 0}" th:each="pageNumber : ${pageNumbers}">
+            <a th:href="@{/products(size=${productPage.size}, page=${pageNumber})}"
+               th:text="${pageNumber}"
+               th:class="${pageNumber == productPage.number + 1} ? 'active'"></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
